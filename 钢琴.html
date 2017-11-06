@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style>
+			*{
+				margin: 0;
+				padding: 0;
+			}
+			body{
+				cursor: pointer;
+			}
+			ul{
+				float:left;
+			}
+			li{
+				width:60px;height:30px;
+				background: gray;
+				margin: 10px;
+				
+				list-style: none;
+				text-align: center;
+				line-height: 30px;
+				float: left;
+			}
+			button{
+				margin: 10px;
+			}
+			header{
+				width:100%;
+				height:50px;
+				background: #000;
+				color: #fff;
+				text-align: center;
+				font-size: 24px;
+				line-height: 50px;
+			}
+			
+			footer{
+				width:100%;
+				height:50px;
+				background: #000;
+				float: left;
+			}
+		</style>
+	</head>
+	<body>
+		<header>钢琴演奏</header>
+		<section>
+			<ul>
+				<li>1</li>
+				<li>2</li>
+				<li>3</li>
+				<li>4</li>
+				<li>5</li>
+				<li>6</li>
+				<li>7</li>
+				<li>8</li>
+			</ul>
+			<audio src ="mp3/1.mp3"></audio>
+			<audio src ="mp3/2.mp3"></audio>
+			<audio src ="mp3/3.mp3"></audio>
+			<audio src ="mp3/4.mp3"></audio>
+			<audio src ="mp3/5.mp3"></audio>
+			<audio src ="mp3/6.mp3"></audio>
+			<audio src ="mp3/7.mp3"></audio>
+			<audio src ="mp3/8.mp3"></audio>
+			<button id="btn1"> 清除音乐 </button>
+			<button id="btn2"> 播放录制的音乐 </button>
+		</section>
+		<footer></footer>
+
+		<script type="text/javascript" src="js/jquery-3.2.1.js" ></script>
+		<script>
+			//原生js的写法
+			/*var arr = document.getElementsByTagName("li");
+			var arr1 = document.getElementsByTagName("audio");
+			
+			for (var i =0;i<arr.length;i++) {
+				//var arr1[i].xxx=i;
+				var a = arr[i];
+				a.index = i;
+				//console.log(a.index);
+				a.onmouseover=function(){
+					//console.log(a.index);
+					arr1[this.index].load();
+					this.style.background = "red";
+					arr1[this.index].play();
+				}
+				a.onmouseout=function(){
+					this.style.background = "gray";
+				}
+				
+			}*/
+			
+			
+			//jQuery的写法
+			
+			$("li").mouseover(function(){
+				var i=$(this).index();
+				$(this).css({"background":"red"});
+				var oo = $("audio").eq(i).get(0);
+				oo.load();
+				oo.play();
+			})
+			$("li").mouseout(function(){
+				$(this).css({"background":"gray"});
+			})
+			
+			/********键盘弹奏*********/
+			//js原生写法
+			/*document.onkeydown = function(e){
+				var j = e.keyCode - 49;
+				arr1[j].load();
+				this.style.background = "red";
+				arr1[j].play();
+				
+			}
+			document.onkeyup =function(e){
+				var j = e.keyCode - 49;
+				this.style.background = "gray";
+			}*/
+			
+			
+			//jQuery的写法
+			$(document).keydown(function(e){
+				var i = e.keyCode - 49;
+				//录制旋律
+				arr.push(i);
+				var s = JSON.stringify(arr);
+				// 保存 localStorage
+				localStorage.setItem("qp", s)
+				
+				
+				
+				var a = $("audio").get(i);
+				var b = $("li").get(i);
+				a.load();
+				b.style.background = "red";
+				a.play();
+				
+			})
+			$(document).keyup(function(e){
+				var i = e.keyCode - 49;
+				var a = $("audio").get(i);
+				var b = $("li").get(i);
+				b.style.background = "gray";
+			})
+			
+			//录制旋律
+			var arr = [];
+			$("#btn1").click(function(){
+				localStorage.removeItem("qp")
+			})
+			$("#btn2").click(function() {
+				var str = localStorage.getItem("qp");
+				if(!str){
+					alert("未录制音乐")
+					return;
+				}
+				var arr = JSON.parse(str);
+				
+				//console.log(str)
+				
+				var i = 0;
+				var t = setInterval(function() {
+					
+					if (i >= arr.length) {
+						clearInterval(t)
+						return ;
+					}
+					
+					// arr[i] 是保存的下标
+					var a = $("audio").get(arr[i])
+					//var b = $("li").get(i);
+					//b.style.background = "red";
+					a.load();
+					
+					a.play();
+					
+					i++;
+				}, 500)
+			
+			})
+		</script>
+	</body>
+</html>
