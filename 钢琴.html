@@ -15,17 +15,18 @@
 				float:left;
 			}
 			li{
-				width:60px;height:30px;
+				width:60px;height:160px;
 				background: gray;
-				margin: 10px;
+				margin: 5px;
 				
 				list-style: none;
 				text-align: center;
-				line-height: 30px;
+				line-height: 160px;
 				float: left;
 			}
 			button{
-				margin: 10px;
+				margin: 40px;
+				line-height: 90px;
 			}
 			header{
 				width:100%;
@@ -74,9 +75,9 @@
 		<script type="text/javascript" src="js/jquery-3.2.1.js" ></script>
 		<script>
 			//原生js的写法
-			/*var arr = document.getElementsByTagName("li");
-			var arr1 = document.getElementsByTagName("audio");
-			
+			//var arr = document.getElementsByTagName("li");
+			//var arr1 = document.getElementsByTagName("audio");
+			/*
 			for (var i =0;i<arr.length;i++) {
 				//var arr1[i].xxx=i;
 				var a = arr[i];
@@ -151,12 +152,13 @@
 			//录制旋律
 			var arr = [];
 			$("#btn1").click(function(){
-				localStorage.removeItem("qp")
+				localStorage.removeItem("qp");
+				alert("清除成功！");
 			})
 			$("#btn2").click(function() {
 				var str = localStorage.getItem("qp");
 				if(!str){
-					alert("未录制音乐")
+					alert("未录制音乐！")
 					return;
 				}
 				var arr = JSON.parse(str);
@@ -172,15 +174,22 @@
 					}
 					
 					// arr[i] 是保存的下标
-					var a = $("audio").get(arr[i])
-					//var b = $("li").get(i);
-					//b.style.background = "red";
+					var a = $("audio").get(arr[i]);
+					
+					//键盘样式
+					var b = $("li").get(arr[i]);
+					b.style.background = "red";
+					setTimeout(function(){
+						b.style.background = "gray";
+					},200)
+					
+					
 					a.load();
 					
 					a.play();
 					
 					i++;
-				}, 500)
+				}, 300)
 			
 			})
 		</script>
